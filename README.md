@@ -11,7 +11,6 @@ Installing from source
 ```
 git clone https://github.com/hotnops/aws_role_manager
 cd aws_role_manager
-pip install -r requirements.txt
 python setup.py install
 ```
 
@@ -21,11 +20,11 @@ python setup.py install
 Easily save credentials by piping them to aws_role_manager
 
 ```
-aws sts assume-role --role-arn <role arn> --role-session-name | aws_role_manager
+aws sts assume-role --role-arn <role arn> --role-session-name | awsrolemanager
 ```
 
 Launch new command prompts with specified roles
 ```
-aws_role_manager menu
+awsrolemanager menu
 ```
 
