@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='awsrolemanager',
-    version = '0.3',
+    version = '0.0.1',
     license = 'bsd3-clause-clear',
     description = 'A tool for quickly managing AWS roles',
     author = 'hotnops',
