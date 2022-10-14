@@ -305,7 +305,9 @@ def main():
     if len(sys.argv) > 1:
         # Parse args and follow command
         parser = argparse.ArgumentParser()
-        if sys.argv[1] == "menu":
+        parser.add_argument('-m', action='store_true')
+        args = parser.parse_args()
+        if args.m:
             run_ui()
     else:
         try:
