@@ -27,4 +27,4 @@ Launch new command prompts with specified roles
 ```
 awsrolemanager -m
 ```
-![](https://github.com/hotnops/aws_role_manager/readme/awsrolemanager.gif)
+![](https://github.com/hotnops/aws_role_manager/blob/main/readme/awsrolemanager.gif)
