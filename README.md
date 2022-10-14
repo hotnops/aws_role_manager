@@ -25,6 +25,6 @@ aws sts assume-role --role-arn <role arn> --role-session-name | awsrolemanager
 
 Launch new command prompts with specified roles
 ```
-awsrolemanager menu
+awsrolemanager -m
 ```
-![](https://github.com/hotnops/aws_role_manager/tree/main/readme/awsrolemanager.gif)
+![](https://github.com/hotnops/aws_role_manager/readme/awsrolemanager.gif)
