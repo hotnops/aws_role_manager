@@ -272,7 +272,7 @@ def launch_role(profile_name: str, config_data: dict) -> None:
     #if 'aws_session_token' in config_data:
     #    custom_env['AWS_SESSION_TOKEN'] = config_data['aws_session_token']
 
-    subprocess.Popen('/usr/bin/x-terminal-emulator', env=custom_env)
+    subprocess.Popen('/usr/bin/gnome-terminal', env=custom_env)
 
 
 def run_ui() -> None:
