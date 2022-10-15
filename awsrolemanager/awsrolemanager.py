@@ -68,7 +68,11 @@ def save_credentials(sts_creds: dict) -> str:
     session_name = get_session_name_from_arn(arn)
     expiration = sts_creds['Credentials']['Expiration']
 
-    profile_name = f"{account_number}-{role_name}-{session_name}"
+    profile_name = f"{account_number}-{role_name}"
+
+
+    if not os.path.exists(os.path.expanduser("~/.aws")):
+        os.mkdir(os.path.expanduser("~/.aws"))
 
     with open(os.path.expanduser("~/.aws/credentials"), 'a', encoding="utf-8") as file:
         access_key_id = sts_creds['Credentials']['AccessKeyId']
@@ -173,7 +177,8 @@ def parse_configuration_data() -> dict:
         if key not in config_items:
             profiles[key] = value
         else:
-            profiles[key] = value | config_items[key]
+            profiles[key] = dict(list(value.items()) + 
+                list(config_items[key].items()))
 
     return profiles
 
@@ -181,13 +186,13 @@ def get_time_difference(timestamp: str) -> int:
     """
     Gets the difference in seconds between UTC now and the provided timeestamp
     Parameters:
-    timestamp - A string timestamp in the form %Y-%m-%dT%H:%M:%S+00:00
+    timestamp - A string timestamp in the form %Y-%m-%dT%H:%M:%S
 
     Returns:
     An integer representing the difference in seconds
     """
-    expire_date = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S+00:00')
-    now = datetime.datetime.utcnow()
+    expire_date = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S%z')
+    now = datetime.datetime.now(datetime.timezone.utc)
 
     return (expire_date - now).total_seconds()
 
@@ -205,6 +210,11 @@ def print_table(profile_data: dict) -> list:
 
     table = prettytable.PrettyTable(["Index", "Name", "Role Name",
         "Session Name", "Time Remaining"])
+    table._max_width = {"Name": 20, "Role Name": 20, "Session Name": 20,
+                        "Time Remaining": 10}
+
+    table.set_style(prettytable.DOUBLE_BORDER)
+    table.hrules = prettytable.ALL
     i = 0
     keys = profile_data.keys()
     for key in keys:
@@ -215,16 +225,14 @@ def print_table(profile_data: dict) -> list:
         if 'expiration' in profile_data[key]:
             expiration_seconds = get_time_difference(profile_data[key]['expiration'])
             if expiration_seconds < 0:
-                expiration = termcolor.colored(
-                    f"Expired {abs(int(expiration_seconds/60))} minutes ago",
-                    'red')
+                expiration = f"Expired {abs(int(expiration_seconds/60))} minutes ago"
             else:
                 color = 'green'
                 if int(expiration_seconds) < 600:
                     color = 'yellow'
                 if int(expiration_seconds) < 60:
                     color = 'red'
-                expiration = termcolor.colored(f"{int(expiration_seconds)} seconds", color)
+                expiration = f"{int(expiration_seconds)} seconds"
 
         if "role_name" in profile_data[key]:
             role_name = profile_data[key]['role_name']
