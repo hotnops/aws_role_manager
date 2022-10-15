@@ -7,6 +7,7 @@ when managing multiple roles.
 import sys
 
 import argparse
+import codename
 import subprocess
 import datetime
 import json
@@ -68,8 +69,7 @@ def save_credentials(sts_creds: dict) -> str:
     session_name = get_session_name_from_arn(arn)
     expiration = sts_creds['Credentials']['Expiration']
 
-    profile_name = f"{account_number}-{role_name}"
-
+    profile_name = codename.codename(separator='_')
 
     if not os.path.exists(os.path.expanduser("~/.aws")):
         os.mkdir(os.path.expanduser("~/.aws"))

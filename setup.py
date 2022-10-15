@@ -10,6 +10,7 @@ setup(
     download_url = 'https://github.com/hotnops/aws_role_manager/archive/refs/tags/0.0.1.tar.gz',
     packages=['awsrolemanager'],
     install_requires=[
+        'codename',
         'prettytable',
         'termcolor',
         'wcwidth'
