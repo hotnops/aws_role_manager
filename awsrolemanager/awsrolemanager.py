@@ -117,37 +117,40 @@ def parse_config_file(config_file_path: str) -> dict:
     A dictionary representing a configuration file
     """
     return_data = {}
-    with open(config_file_path, 'r', encoding="utf-8") as file:
-        text = file.read()
-        lines = text.split('\n')
+    try:
+        with open(config_file_path, 'r', encoding="utf-8") as file:
+            text = file.read()
+            lines = text.split('\n')
 
-        config_item = ''
+            config_item = ''
 
-        for line in lines:
-            # Remove any whitespace
-            line = line.strip()
-            if len(line) == 0:
-                continue
+            for line in lines:
+                # Remove any whitespace
+                line = line.strip()
+                if len(line) == 0:
+                    continue
 
-            if line.startswith('#'):
-                continue
+                if line.startswith('#'):
+                    continue
 
-            if line.startswith('['):
-                config_item = line.strip('[]')
-                return_data[config_item] = {}
-            else:
-                try:
-                    key,value = line.split('=', 1)
-                    if not config_item:
-                        continue
+                if line.startswith('['):
+                    config_item = line.strip('[]')
+                    return_data[config_item] = {}
+                else:
+                    try:
+                        key,value = line.split('=', 1)
+                        if not config_item:
+                            continue
 
-                    return_data[config_item][key.strip()] = value.strip()
+                        return_data[config_item][key.strip()] = value.strip()
 
-                except ValueError as exc:
-                    import pdb; pdb.set_trace()
-                    print(f"[!] invalid line in configuration file: {line}")
-                    print(str(exc))
-                    return None
+                    except ValueError as exc:
+                        import pdb; pdb.set_trace()
+                        print(f"[!] invalid line in configuration file: {line}")
+                        print(str(exc))
+                        return None
+    except FileNotFoundError as f:
+        print("[!] No configuration data found")
 
     return return_data
 
